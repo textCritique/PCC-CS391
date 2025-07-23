@@ -1,3 +1,4 @@
+//linear seach using array
 #include <stdio.h>
 
 int main(){
