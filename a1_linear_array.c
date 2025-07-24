@@ -45,16 +45,19 @@ void insert(int* array, int size, int position, int element){
     }
     else {
         puts("Array is full");
+        return;
     }
     array[position] = element;
     return;
 }
-void delete(int* array,int size,int pos){
+int delete(int* array,int size,int pos){
     if (array[pos] == 0) {
             puts("Nothing to delete!");
+            return 0; // means nothing deleted
     }
     else {
         array[pos] = 0;
+        return 1; //deletion successful
     }
 }
 void display(int* array, int size){
@@ -80,7 +83,7 @@ int main(){
     while(1){
         show_menu();
         puts("Enter your choice as letter: ");
-        scanf("%c",&choice);
+        scanf(" %c",&choice);
         switch (choice)
         {
         case 'A':
@@ -104,9 +107,9 @@ int main(){
         
         case 'B':
             puts("Enter the index of deleted element: ");
+            scanf("%d",&pos);
             if (pos < size && pos >= 0){
-                    delete(array,size,pos);
-                    current_size--;
+                    current_size = current_size - delete(array,size,pos);
                 }
                 else{
                     puts("Invalid index!");
