@@ -32,10 +32,11 @@ int pop(){
     node* temp = stack;
     stack = stack->next;
     int popped = temp->data;
+    free(temp);
     return popped;
 }
 
-int display(node* stack){
+void display(node* stack){
     for (node* p = stack; p != NULL; p = p->next){
         printf("|______%5d______|\n",p->data);
     }
