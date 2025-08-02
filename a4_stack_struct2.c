@@ -2,11 +2,7 @@
 // top of the stack is the head node of the linked list
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct node{
-    int data;
-    struct node* next;
-}node;
-
+#include "a4_stack_struct2.h"
 node* stack;
 
 int push(int item){
@@ -47,16 +43,16 @@ int peek(){
     }
     return stack->data;
 }
-int main(){
-    push(1);
-    push(2);
-    push(3);
-    push(4);
-    push(5);
-    pop();
-    pop();
-    push(10);
-    printf("%d\n",peek());
-    display(stack);
-    return 0;
-}
+// int main(){
+//     push(1);
+//     push(2);
+//     push(3);
+//     push(4);
+//     push(5);
+//     pop();
+//     pop();
+//     push(10);
+//     printf("%d\n",peek());
+//     display(stack);
+//     return 0;
+// }
