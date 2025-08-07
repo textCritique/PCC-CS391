@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <ctype.h>
 int main(){
     // int matrix[2][3];
     // int colsize = sizeof(matrix[0]) / sizeof(int);
@@ -21,5 +21,6 @@ int main(){
     //     string[len-i-1] = temp;
     // }
     // printf("%s\n",string);
+    printf("123 -10 = %d",atoi("   123 . ")-10);
     return 0;
 }
