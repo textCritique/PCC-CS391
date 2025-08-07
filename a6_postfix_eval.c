@@ -1,5 +1,5 @@
-// do not write this 
-// work in progress
+// working assumption is that the no are single digits and ans of all intermediate computations is also single digit
+// we have removed this assumption in prefix eval by introducing comma separator
 #include <stdio.h>
 #include "a4_stack_struct2.h"
 #include <string.h>
