@@ -11,53 +11,37 @@ typedef struct q{
     int q[MAX];
 }queue;
 void initQ(queue *q,int size){
-    q->size = size;
+    q->size = size+1;
     q->head = q->tail = 0;
 }
+int size(queue* q){
+    if (q->tail - q->head >= 0)
+        return q->tail - q->head;
+    return q->tail - q->head + q->size-1;
+}
 int enqueue(queue *q, int item){
-    if (q->head == q->tail +1) // queue is full
-        return 0;
-    if (q->head == 0 && q->tail == q->size)
+    if (size(q) == q->size -1)
         return 0;
     q->q[q->tail] = item;
-    if (q->size -1 == q->tail ) // for wrapping around the first
-        q->tail = 0;
-    else
-        q->tail = q->tail +1;
-    return 1;
+    q->tail = q->tail + 1;
+    if (q->tail == q->size) q->tail = 0;
 }
 int dequeue(queue *q){
-    if (q->head == q->tail) //queue is empty
+    if (size(q) == 0)
         return 0;
     int temp = q->q[q->head];
-    if (q->head == q->size -1)
-        q->head = 0;
-    else
-        q->head = q->head +1;
+    q->head = q->head +1;
+    if (q->head == q->size) q->head = 0;
     return temp;
 }
 int peek(queue *q){
-    if (q->head == q->tail) //queue is empty
+    if (size(q) == 0)
         return 0;
     return q->q[q->head];
 }
-void display(queue *q){
-    if (q->head == q->tail){ //queue is empty
-        printf("Empty\n");
-        return;
-    }
-    for (int i = q->head; i != q->tail+1 ; i++){
-        if (i == q->tail-1){
-            printf("%d\n",q->q[i]);
-            break;
-        }
-        else
-            printf("%d <- ",q->q[i]);
-        if (i == q->size -1 && q->head > q->tail) 
-            i = 0;
+// void display(queue *q){
 
-    }
-}
+// }
 void show_menu(){
     puts(" ");
     puts("\t\t\t|____________Menu____________|");
@@ -65,7 +49,7 @@ void show_menu(){
     puts("\t\t\t|2. Enqueue                  |");
     puts("\t\t\t|3. Dequeue                  |");
     puts("\t\t\t|4. Peek                     |");
-    puts("\t\t\t|5. Display                  |");
+    // puts("\t\t\t|5. Display                  |");
     puts("\t\t\t|6. Exit                     |");
     puts(" ");
 }
@@ -80,7 +64,7 @@ int main(){
         switch (choice)
         {
         case 1: // initialize the queue
-            printf("Size: ");
+            printf("Max size: ");
             scanf("%d",&temp);
             initQ(&q,temp);
             break;
@@ -89,19 +73,19 @@ int main(){
             scanf("%d",&temp);
             temp = enqueue(&q,temp);
             temp == 0? printf("Queue overflow\n"): printf("Enqueued\n",temp);
-            display(&q);
+            // display(&q);
             break;
         case 3: // dequeue
             temp = dequeue(&q);
             temp == 0? printf("Queue underflow\n"): printf("Dequeued %d\n",temp);
-            display(&q);
+            // display(&q);
             break;
         case 4: // peek
             temp = peek(&q);
             temp == 0? printf("Queue empty!\n"): printf("%d\n",temp);
             break;
         case 5: // display whole queue
-            display(&q);
+            // display(&q);
             break;
         case 6:
             puts("Exiting!");
