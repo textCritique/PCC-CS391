@@ -15,23 +15,23 @@ void initQ(queue *q,int size){
     q->head = q->tail = 0;
 }
 int size(queue* q){
-    if (q->tail - q->head >= 0)
+    if (q->tail - q->head >= 0) // check if tail comes after head
         return q->tail - q->head;
-    return q->tail - q->head + q->size-1;
+    return q->tail - q->head + q->size-1; // when head comes after tail
 }
 int enqueue(queue *q, int item){
-    if (size(q) == q->size -1)
+    if (size(q) == q->size -1) // check if full
         return 0;
     q->q[q->tail] = item;
     q->tail = q->tail + 1;
-    if (q->tail == q->size) q->tail = 0;
+    if (q->tail == q->size) q->tail = 0; // wraping around the start of array
 }
 int dequeue(queue *q){
-    if (size(q) == 0)
+    if (size(q) == 0) // check if queue is empty
         return 0;
     int temp = q->q[q->head];
     q->head = q->head +1;
-    if (q->head == q->size) q->head = 0;
+    if (q->head == q->size) q->head = 0; // wraping around the start of array
     return temp;
 }
 int peek(queue *q){
