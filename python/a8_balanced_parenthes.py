@@ -1,3 +1,4 @@
+# working assumption is that whole string is already balanced then it finds second largest balanced substring
 # to find largest balanced parenthes substring 
 # we keep track of start and end when stack is empty
 # later we can find largest pair by comparing with each pairs' end - start
