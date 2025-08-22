@@ -102,7 +102,8 @@ void deleteAtEnd(linkedlist_t* list){
         return;
     if (trav->next == NULL){
         free(trav);
-        trav = NULL;
+        list->head = NULL;
+        return;
     }
     node_t* trav2 = trav->next;
     while (trav2->next!= NULL){
