@@ -26,12 +26,8 @@ void swap(bh *heap,int i, int j){
     heap->q[j] = temp;
     // we have updated value in the heap only not in the variable because 
     // we only need indices and later we retrive values from original heap
-    // following updates the index of th parent and child accordingly
-    // temp = child->i;
-    // child->i = parent->i;
-    // parent->i = temp;
 }
-// for displaying binary heap to a given level
+// for displaying binary heap in a single line
 void display(bh* heap){
     for (int i = 0;i < heap->ci; i++){
         printf("%d ",heap->q[i]);
@@ -54,16 +50,18 @@ vi get_parent(bh *heap, int index){
 }
 // makes necessary swaps to move element upward so as to preserve heap invariant
 void swim(bh* heap,int i){
-    if (i == 0) return;
+    if (i == 0) return; // base case - reached the root
     else {
         vi c_child = {heap->q[i],i};
         vi c_parent = get_parent(heap,i);
+        // for checking invariant down the level of parent
         while ( !compare(c_parent,c_child)){
             swap(heap,c_parent.i,c_child.i);
-            c_child.val = c_parent.val;
+            c_child.val = c_parent.val;        // initially assigned c_parent to c_child - caused bug because child and parent are at their respective indices only value contained therein needs to swapped
             c_parent = get_parent(heap,c_child.i);
             printf("p = %d, %d; c = %d, %d\n",c_parent.val,c_parent.i,c_child.val,c_child.i);
         }
+        // for checking invariant one level above the parent
         swim(heap,c_parent.i);
     }
 }
@@ -77,12 +75,10 @@ int sink(bh *heap,int i){
     // if there is one child ie child_left
     if (child_left.i == heap->ci -1 ){
         if (!compare(parent,child_left)) swap(heap,parent.i,child_left.i);
-        display(heap);
         return child_left.i;
     }
     // child doesn't exist for element at i
     else if (child_left.i >= heap->ci){
-        display(heap);
         return i;
     }
     else {
@@ -90,12 +86,10 @@ int sink(bh *heap,int i){
         // swap with left child if there is tie 
         if ((!compare(parent,child_left) || !compare(parent,child_right)) && compare(child_left,child_right)){
             swap(heap,parent.i,child_left.i);
-            display(heap);
             return sink(heap,child_left.i);
         }
         else if (!compare(parent,child_left) || !compare(parent,child_right)) {
             swap(heap,parent.i,child_right.i);
-            display(heap);
             return sink(heap,child_right.i);
         }
         else {
@@ -120,7 +114,7 @@ void poll(bh *heap){
     // if not modify the heap accordingly
     sink(heap,0); // after swap newRoot is at 0
 }
-
+// for deleting particular value from heap
 void Remove(bh *heap, int item){
     // do a linear search through the array to find the index of item
     int index = -1; // this will be used also as a check
@@ -138,9 +132,10 @@ void Remove(bh *heap, int item){
     swap(heap,index,heap->ci-1);
     // delete the item
     heap->ci = heap->ci -1;
-    // first sink then swim up
+    // first sink then swim up - to preserve the invariant
     swim(heap,sink(heap,index));
 }
+// for inserting value into the heap
 void insert(bh *heap, int item){
     // check if space is available
     if (heap->ci >= MAX){
@@ -156,7 +151,6 @@ void insert(bh *heap, int item){
 
     // check if heap invariant is preserved
     // if not then modify the code accordingly
-    display(heap);
     swim(heap,c_child.i);
     printf("p = %d, %d; c = %d, %d\n",c_parent.val,c_parent.i,c_child.val,c_child.i);
     // printf("child %d pare %d\n",c_child.i,c_parent.i);
@@ -166,7 +160,7 @@ void insert(bh *heap, int item){
 int main(){
     bh *h = malloc(sizeof(bh)); 
     h->ci = 0;
-    /*insert(h,1);
+    insert(h,1);
     insert(h,2);
     insert(h,3);
     insert(h,4);
@@ -175,39 +169,12 @@ int main(){
     insert(h,7);
     insert(h,8);
     insert(h,9);
-    insert(h,10);*/
-    
-    h->q[0] = 1 ;
-    h->q[1] = 5 ;
-    h->q[2] = 1 ;
-    h->q[3] = 8;
-    h->q[4] = 6;
-    h->q[5] = 2;
-    h->q[6] = 2;
-    h->q[7] = 13;
-    h->q[8] = 12;
-    h->q[9] = 11;
-    h->q[10] = 7;
-    h->q[11] = 2;
-    h->q[12] = 15;
-    h->q[13] = 3;
-    h->q[14] = 10;
-    h->ci = 15;
+    insert(h,10);
     display(h);
     poll(h);
-    Remove(h,12);
-    Remove(h,3);
-    poll(h);
+    display(h);
     Remove(h,6);
     display(h);
-    // insert(h,3);
-    // insert(h,4);
-    // insert(h,2);
-    // insert(h,1);
-    // insert(h,4);
-    // insert(h,3);
-    // insert(h,5);
-
-    display(h);
     free(h);
+    return 0;
 }
