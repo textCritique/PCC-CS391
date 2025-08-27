@@ -184,6 +184,29 @@ void deletePos(linkedlist_t *list, int pos){
     trav->next = deleted->next;
     free(deleted);
 }
+// recursive function to reverse a list given head node
+// returns head node of reversed list
+node_t* reverse(node_t* head){
+    // base case - there is only one node then list is reversed
+    if (head != NULL && head->next == NULL)
+        return head;
+    // two nodes
+    else if (head->next != NULL && head->next->next == NULL){
+        // change the data of the head node first so make a temp copy
+        int temp = head->data;
+        head->data = head->next->data;
+        head->next->data = temp;
+        return head;
+    }
+    // recursive case - reverse the node after the head and connect reversed node to the last of node
+    node_t *newhead = head->next;
+    node_t *trav = reverse(head->next);
+    while (trav->next != NULL)
+        trav = trav->next;
+    trav->next = head;
+    head->next = NULL;
+    return newhead;
+}
 // //////////////////////////////////////////////////////////////////////////
 // void unitTest1(){
 //     linkedlist_t* newlist = CreateLinkedList();
