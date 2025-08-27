@@ -207,6 +207,11 @@ node_t* reverse(node_t* head){
     head->next = NULL;
     return newhead;
 }
+void ReverseLinkedList(linkedlist_t *list){
+    if (list->head == NULL)
+        return;
+    list->head = reverse(list->head);
+}
 // //////////////////////////////////////////////////////////////////////////
 // void unitTest1(){
 //     linkedlist_t* newlist = CreateLinkedList();
