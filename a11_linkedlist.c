@@ -27,7 +27,16 @@ void PrintedLinkedList(linkedlist_t* list){
     }
     puts("");
 }
-
+// length of the ll
+int len(linkedlist_t *list){
+    int length = 0;
+    node_t *trav = list->head;
+    while (trav != NULL){
+        trav = trav->next;
+        length++;
+    }
+    return length;
+} 
 //Recursive definition of FreeLinkedList from head node
 
 // void FreeLinkedList(node_t* head){
@@ -84,11 +93,12 @@ void AppendToLinkedList(linkedlist_t* list, int data){
     }
 
 }
-
+// insert at the first pos
 void insertAtStart(linkedlist_t* list, int data){
     node_t* new = malloc(sizeof(node_t));
     new->data = data;
     new->next = NULL;
+    // if ll is empty
     if (list->head == NULL)
         list->head = new;
     else{
@@ -96,15 +106,19 @@ void insertAtStart(linkedlist_t* list, int data){
         list->head = new;
     }
 }
+// deletes the node from the end of ll
 void deleteAtEnd(linkedlist_t* list){
     node_t* trav = list->head;
+    // ll is already empty - nothing to delete
     if (!trav)
         return;
+    // ll has only one element
     if (trav->next == NULL){
         free(trav);
-        list->head = NULL;
+        list->head = NULL; // was doing trav = NULL - cause of bug because list->head is still pointing at freed address
         return;
     }
+    // more than 1 node in ll
     node_t* trav2 = trav->next;
     while (trav2->next!= NULL){
         trav2 = trav2->next;
@@ -113,6 +127,7 @@ void deleteAtEnd(linkedlist_t* list){
     free(trav2);
     trav->next = NULL;
 }
+// delete the first node of ll
 void deleteHead(linkedlist_t* list){
     node_t* deleted = list->head;
     if (!deleted)
@@ -120,8 +135,55 @@ void deleteHead(linkedlist_t* list){
     list->head = deleted->next;
     free(deleted);
 }
+// for inserting at a given position if possible - valid pos 1 to length of linked list
+void insertPos(linkedlist_t *list, int data , int pos){
+    // insert at first pos
+    if (pos == 1){
+        insertAtStart(list,data);
+        return;
+    }
+    int length = len(list);
+    // append to the list
+    if (pos == length +1){
+        AppendToLinkedList(list,data);
+        return;
+    }
+    if (pos > length+1){
+        puts("not a valid position");
+        return;
+    }
+    // inserting at position from 2 to length of ll
+    node_t *trav, *trav2;
+    trav = list ->head;
+    // traverse trav to 1 position before pos
+    for (int i = 1; i < pos-1; i++, trav = trav->next);
+    trav2 = trav->next;
 
-
+    node_t *new = malloc(sizeof(node_t));
+    new->data = data;
+    new->next = trav2;
+    trav->next =new;
+}
+// for deleting at a given pos
+void deletePos(linkedlist_t *list, int pos){
+    // delete the first node
+    if (pos == 1){
+        deleteHead(list);
+        return;
+    }
+    int length = len(list);
+    // delete the last node
+    if (pos == length){
+        deleteAtEnd(list);
+        return;
+    }
+    // for deleting node between 2 to length of ll -1
+    node_t *trav = list->head;
+    for (int i = 1; i < pos -1; i++, trav = trav->next);
+    node_t *deleted = trav->next;
+    trav->next = deleted->next;
+    free(deleted);
+}
 // //////////////////////////////////////////////////////////////////////////
 // void unitTest1(){
 //     linkedlist_t* newlist = CreateLinkedList();
@@ -166,11 +228,16 @@ int main(){
             AppendToLinkedList(l,i);
         PrintedLinkedList(l);
     }
-    for(int i = 0; i < 5; i++){
-        if (i%2)
-            deleteHead(l);
-        else
-            deleteAtEnd(l);
-        PrintedLinkedList(l);
-    }
+    insertPos(l,3,3);
+    PrintedLinkedList(l);
+    deletePos(l,3);
+    PrintedLinkedList(l);
+    FreeLinkedList(l);
+    // for(int i = 0; i < 5; i++){
+    //     if (i%2)
+    //         deleteHead(l);
+    //     else
+    //         deleteAtEnd(l);
+    //     PrintedLinkedList(l);
+    // }
 }
