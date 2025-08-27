@@ -199,8 +199,8 @@ node_t* reverse(node_t* head){
         return head;
     }
     // recursive case - reverse the node after the head and connect reversed node to the last of node
-    node_t *newhead = head->next;
     node_t *trav = reverse(head->next);
+    node_t *newhead = trav;
     while (trav->next != NULL)
         trav = trav->next;
     trav->next = head;
@@ -244,16 +244,11 @@ node_t* reverse(node_t* head){
 // //////////////////////////////////////////////////////////////////////////
 int main(){
     linkedlist_t* l = CreateLinkedList();
-    for(int i = 0; i < 5; i++){
-        if (i%2)
-            insertAtStart(l,i);
-        else
-            AppendToLinkedList(l,i);
-        PrintedLinkedList(l);
+    for(int i = 1; i < 11; i++){
+        AppendToLinkedList(l,i);
     }
-    insertPos(l,3,3);
     PrintedLinkedList(l);
-    deletePos(l,3);
+    l->head = reverse(l->head);
     PrintedLinkedList(l);
     FreeLinkedList(l);
     // for(int i = 0; i < 5; i++){
