@@ -247,20 +247,20 @@ void ReverseLinkedList(linkedlist_t *list){
 //     return 0;
 // }
 // //////////////////////////////////////////////////////////////////////////
-int main(){
-    linkedlist_t* l = CreateLinkedList();
-    for(int i = 1; i < 11; i++){
-        AppendToLinkedList(l,i);
-    }
-    PrintedLinkedList(l);
-    l->head = reverse(l->head);
-    PrintedLinkedList(l);
-    FreeLinkedList(l);
-    // for(int i = 0; i < 5; i++){
-    //     if (i%2)
-    //         deleteHead(l);
-    //     else
-    //         deleteAtEnd(l);
-    //     PrintedLinkedList(l);
-    // }
-}
+// int main(){
+//     linkedlist_t* l = CreateLinkedList();
+//     for(int i = 1; i < 11; i++){
+//         AppendToLinkedList(l,i);
+//     }
+//     PrintedLinkedList(l);
+//     l->head = reverse(l->head);
+//     PrintedLinkedList(l);
+//     FreeLinkedList(l);
+//     // for(int i = 0; i < 5; i++){
+//     //     if (i%2)
+//     //         deleteHead(l);
+//     //     else
+//     //         deleteAtEnd(l);
+//     //     PrintedLinkedList(l);
+//     // }
+// }
