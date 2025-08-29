@@ -127,6 +127,7 @@ void Remove(bh *heap, int item){
     // check if item exists in heap
     if (index == -1){
         printf("%d does not exist in heap",item);
+        return;
     }
     // first swap the item with element at bottom rigthtest 
     swap(heap,index,heap->ci-1);
