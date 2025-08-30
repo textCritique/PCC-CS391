@@ -91,7 +91,7 @@ void appendDll(dll_t * dll, int data){
     dll->tail = new;
 }
 // delete a node from the end
-void deleteAtEnd(dll_t *dll){
+void deleteTail(dll_t *dll){
     // when already empty
     if (dll->head == NULL && dll->tail == NULL){
         printf("already empty");
@@ -110,14 +110,58 @@ void deleteAtEnd(dll_t *dll){
     dll->tail->next = NULL;
     free(deleted);
 }
+// insert at the beginning of the dll
+void insertHead(dll_t* dll,int data){
+    node_t *new = malloc(sizeof(node_t));
+    new->next = NULL;
+    new->prev = NULL;
+    new->data = data;
+    // when dll is empty
+    if (dll->head == NULL && dll->tail == NULL){ // checking for head is also enough
+        dll->head = new;
+        dll->tail = new;
+        return;
+    }
+    // when dll contains one node only
+    if (dll->head == dll->tail){
+        new->next = dll->tail;
+        dll->tail->prev = new;
+        dll->head = new;
+        return;
+    }
+    // when dll has two or more elements
+    new->next = dll->head;
+    dll->head->prev = new;
+    dll->head = new;
+}
+// delete from the first node
+void deleteHead(dll_t *dll){
+    node_t *deleted = dll->head;
+    if (!deleted){ // check if dll is empty
+        printf("already empty\n");
+        return;
+    }
+    // when only one node is available
+    if (deleted->next == NULL){
+        free(deleted);
+        dll->head = NULL;
+        dll->tail = NULL;
+        return;
+    }
+    // when two or more nodes are available
+    deleted->next->prev = NULL;
+    dll->head = deleted->next;
+    free(deleted);
+}
 int main(){
     dll_t* dll = createDll();
-    for (int i = 0; i < 9;i++){
-        appendDll(dll,i);
+    int n = 3;
+    for (int i = 0; i < n;i++){
+        insertHead(dll,i);
         printDll(dll);
     }
-    for (int i =0; i< 10; i++){
-        deleteAtEnd(dll);
+    for (int i =0; i < n; i++){
+        deleteHead(dll);
         printDll(dll);
     }
     return 0;
