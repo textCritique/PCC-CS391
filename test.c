@@ -21,6 +21,8 @@ int main(){
     //     string[len-i-1] = temp;
     // }
     // printf("%s\n",string);
-    printf("123 -10 = %d",atoi("   123 . ")-10);
+    // printf("123 -10 = %d",atoi("   123 . ")-10);
+    int i = 5;
+    for (;i<6;i++) printf("%d ",i);
     return 0;
 }
