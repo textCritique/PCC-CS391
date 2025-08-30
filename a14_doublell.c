@@ -55,10 +55,9 @@ void freeDll(dll_t* dll){
         free(dll);
         return;
     }
-
     // next - node next to current
     node_t *next = current->next;
-    whlle(current != NULL){
+    while(current != NULL){
         free(current);
         current = next;
         if (next != NULL)
@@ -68,21 +67,19 @@ void freeDll(dll_t* dll){
 }
 // create a new node and append it to head
 void appendDll(dll_t * dll, int data){
-    node_t* h = dll->head;
-    node_t* t = dll->tail;
     // allocate memory for the new node
     node_t* new = malloc(sizeof(node_t));
     new->next = NULL;
     new->prev = NULL;
     new->data = data;
     // when dll is empty
-    if (h == NULL && t == NULL){ // checking for head is also enough
+    if (dll->head == NULL && dll->tail == NULL){ // checking for head is also enough
         dll->head = new;
         dll->tail = new;
         return;
     }
     // when dll has one node only
-    if (h == t){
+    if (dll->head == dll->tail){
         dll->head->next = new;
         new->prev = dll->head;
         dll->tail = new;
@@ -91,4 +88,37 @@ void appendDll(dll_t * dll, int data){
     // when dll has 2 or more nodes
     dll->tail->next = new;
     new->prev = dll->tail;
+    dll->tail = new;
+}
+// delete a node from the end
+void deleteAtEnd(dll_t *dll){
+    // when already empty
+    if (dll->head == NULL && dll->tail == NULL){
+        printf("already empty");
+        return;
+    }
+    // when single node
+    if (dll->head == dll->tail){
+        free(dll->head); //as both head and tail point to same address so freeing head frees tail too
+        dll->head = NULL;
+        dll->tail = NULL;
+        return;
+    }
+    // when two or more nodes
+    node_t *deleted = dll->tail;
+    dll->tail = deleted->prev;
+    dll->tail->next = NULL;
+    free(deleted);
+}
+int main(){
+    dll_t* dll = createDll();
+    for (int i = 0; i < 9;i++){
+        appendDll(dll,i);
+        printDll(dll);
+    }
+    for (int i =0; i< 10; i++){
+        deleteAtEnd(dll);
+        printDll(dll);
+    }
+    return 0;
 }
