@@ -43,7 +43,7 @@ void printDllp(dll_t* dll){
 int len(dll_t* dll){
     node_t *trav = dll->head;
     int length = 0;
-    for (;trav != NULL;);
+    for (;trav != NULL;length++, trav = trav->next);
     return length;
 }
 // follow all links and delete all the nodes
@@ -153,16 +153,57 @@ void deleteHead(dll_t *dll){
     dll->head = deleted->next;
     free(deleted);
 }
+// for inserting at a given position if possible - valid pos range from 1 to n+1
+void insertPos(dll_t *dll, int data, int pos){
+    // insert at first pos
+    if (pos == 1){
+        insertHead(dll,data);
+        return;
+    }
+    int length = len (dll);
+    // append to the dll
+    if (pos == length+1){
+        appendDll(dll,data);
+        return;
+    }
+    // check for invalid pos
+    if (pos > length + 1){
+        printf("not a valid position");
+        return;
+    }
+    // inserting at pos from 2 to length
+    node_t *beforePos, *atPos;
+    beforePos = dll->head;
+    for (int i = 1; i < pos-1; i++,beforePos = beforePos->next);
+    atPos = beforePos->next;
+
+    node_t *new = malloc(sizeof(node_t));
+    new->data = data;
+    new->next = atPos;
+    atPos->prev = new;
+    beforePos->next = new;
+    new->prev = beforePos;
+}
 int main(){
     dll_t* dll = createDll();
-    int n = 3;
+    int n = 6;
+    insertPos(dll,100,1);
+    
+    insertPos(dll,34,2);
+    
+    insertPos(dll,4,3);
+    
+    insertPos(dll,3,3);
+    
     for (int i = 0; i < n;i++){
-        insertHead(dll,i);
+        insertPos(dll,i,3);
         printDll(dll);
+        printDllp(dll);
+        puts("");
     }
-    for (int i =0; i < n; i++){
-        deleteHead(dll);
-        printDll(dll);
-    }
-    return 0;
+    // for (int i =0; i < n; i++){
+    //     deleteHead(dll);
+    //     printDll(dll);
+    // }
+    // return 0;
 }
