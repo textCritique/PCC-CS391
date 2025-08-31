@@ -211,20 +211,56 @@ void deletePos(dll_t *dll,int pos){
     deleted->next->prev = beforePos;
     free(deleted);
 }
+// reverse a dll - a helper function
+// returns the head node of the reversed dll
+node_t* reverse(node_t* head){
+    // base case - there is only one node then list is reversed
+    if (head != NULL && head->next == NULL)
+        return head;
+    // two nodes
+    else if (head->next != NULL && head->next->next == NULL){
+        // reverse the two nodes
+        node_t *tail = head->next;
+        tail->next = head;
+        head->prev = tail;
+        head->next = NULL;
+        tail->prev = NULL;
+        // tail becomes new head
+        return tail;
+    }
+    // recursive case - reverse the node after the head and connect reversed node to the last of node
+    node_t *newhead = reverse(head->next);
+    node_t *trav = newhead;
+    while (trav->next != NULL)
+        trav = trav->next;
+    trav->next = head;
+    head->prev = trav;
+    head->next = NULL;
+    return newhead;
+}
+// wrapper function for reverse
+void ReverseDll(dll_t *list){
+    if (list->head == NULL)
+        return;
+    list->head = reverse(list->head);
+    node_t *trav = list->head;
+    // assign new tail to dll
+    for (;trav->next != NULL; trav = trav->next);
+    list->tail = trav;
+}
 int main(){
     dll_t* dll = createDll();
     int n = 6;
     
     for (int i = 0; i < n;i++){
         appendDll(dll,i);
-        printDll(dll);
-        puts("");
+        // printDll(dll);
+        // puts("");
     }
-    for (int i =0; i < 4; i++){
-        deletePos(dll,3);
-        printDll(dll);
-        printDllp(dll);
-        puts("");
-    }
+    printDll(dll);
+    printDllp(dll);
+    ReverseDll(dll);
+    printDll(dll);
+    printDllp(dll);
     return 0;
 }
