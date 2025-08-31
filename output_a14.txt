@@ -1,0 +1,16 @@
+Print the dll by following head node
+0 1 2 3 4 5 
+Print reversed list
+5 4 3 2 1 0 
+After deleting head
+4 3 2 1 0 
+Inserting from the head
+0 4 3 2 1 0 
+Deleting from the end
+0 4 3 2 1 
+Inserting 100 to 3rd position
+0 4 100 3 2 1 
+Deleting from the 3rd pos
+0 4 3 2 1 
+Printing by following the tail
+1 2 3 4 0 

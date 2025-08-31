@@ -254,13 +254,28 @@ int main(){
     
     for (int i = 0; i < n;i++){
         appendDll(dll,i);
-        // printDll(dll);
-        // puts("");
     }
+    puts("Print the dll by following head node");
     printDll(dll);
-    printDllp(dll);
     ReverseDll(dll);
+    puts("Print reversed list");
     printDll(dll);
+    deleteHead(dll);
+    puts("After deleting head");
+    printDll(dll);
+    insertHead(dll,0);
+    puts("Inserting from the head");
+    printDll(dll);
+    deleteTail(dll);
+    puts("Deleting from the end");
+    printDll(dll);
+    insertPos(dll,100,3);
+    puts("Inserting 100 to 3rd position");
+    printDll(dll);
+    deletePos(dll,3);
+    puts("Deleting from the 3rd pos");
+    printDll(dll);
+    puts("Printing by following the tail");
     printDllp(dll);
     return 0;
 }
