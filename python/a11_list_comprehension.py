@@ -11,16 +11,15 @@ l4 = [i for i in "GKCIET" if i in "aeiou" or i in "AEIOU"]
 print(l4)
 
 l5 = [len(i) for i in ["hello","hi","hola"]]
-print(l4)
+print(l5)
 
 def isprime(n):
     if n==1:
         return False
     if n==2:
         return True
-    c = 0
     for i in range(2,n):
-        if n%2 == 0:
+        if n%i == 0:
             return False
     return True
 l6 = [i for i in range(1,101) if isprime(i)]
@@ -32,7 +31,7 @@ print(l7)
 
 from string import ascii_uppercase
 s = "The quick brown Fox"
-l8 = [i for i in s if i in ascii_uppercase]
+l8 = [i for i in s if i.isupper()]
 print(l8)
 
 l = [-1,-2,6,-6,5]
@@ -43,7 +42,7 @@ l10 = [(i,i**2) for i in range(1,11)]
 print(l10)
 
 s = "We are going."
-l11 = [i for i in s.split() if i in ascii_uppercase]
+l11 = [i for i in s.split() if i[0].isupper() ]
 print(l11)
 
 l12 = [i for i in range(1,101) if i%15 == 0 ]
@@ -67,11 +66,26 @@ matrix = [
     [1,2,3],
     [4,5,6]
 ]
-l17 = [[matrix[i][j] for i in range(2)] for j in range(3)]
-print(l)
-l3 = [i for i in range()]
-print(l)
-l3 = [i for i in range()]
-print(l)
-l3 = [i for i in range()]
-print(l)
+l17 = [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
+print(l17)
+
+l3d = [matrix, l17]
+print(l3d)
+l18 = [ l3d[i][j][k]  for i in range(len(l3d)) for j in range(len(l3d[i])) for k in range(len(l3d[i][j]))  ]
+print(l18)
+
+X= [1,2,3]
+Y=['a','b','c']
+l19 = [ (x, y) for x in X for y in Y]
+print(l19)
+
+def pascal(level):
+	if level ==1:
+		return [1]
+	elif level ==2:
+		return [1,1]
+	else:
+		prev_l =pascal(level-1)
+		return [1] + [prev_l[i] + prev_l[i+1] for i in range(level-2)] + [1]
+		
+print([pascal(i) for i in range(1,6)])
