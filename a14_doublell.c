@@ -184,26 +184,47 @@ void insertPos(dll_t *dll, int data, int pos){
     beforePos->next = new;
     new->prev = beforePos;
 }
+// deleting at specified pos
+void deletePos(dll_t *dll,int pos){
+    // delete the first node
+    if (pos == 1){
+        deleteHead(dll);
+        return;
+    }
+    int length = len(dll);
+    // delete the last node
+    if (pos == length){
+        deleteTail(dll);
+        return;
+    }
+    // check for invalid pos
+    if (pos > length){
+        puts("not a valid position");
+        return;
+    }
+    // for deleting node between 2 to length of dll -1
+    node_t *deleted, *beforePos;
+    beforePos = dll->head;
+    for (int i = 1; i < pos-1; i++, beforePos = beforePos->next );
+    deleted = beforePos->next;
+    beforePos->next = deleted->next;
+    deleted->next->prev = beforePos;
+    free(deleted);
+}
 int main(){
     dll_t* dll = createDll();
     int n = 6;
-    insertPos(dll,100,1);
-    
-    insertPos(dll,34,2);
-    
-    insertPos(dll,4,3);
-    
-    insertPos(dll,3,3);
     
     for (int i = 0; i < n;i++){
-        insertPos(dll,i,3);
+        appendDll(dll,i);
+        printDll(dll);
+        puts("");
+    }
+    for (int i =0; i < 4; i++){
+        deletePos(dll,3);
         printDll(dll);
         printDllp(dll);
         puts("");
     }
-    // for (int i =0; i < n; i++){
-    //     deleteHead(dll);
-    //     printDll(dll);
-    // }
-    // return 0;
+    return 0;
 }
