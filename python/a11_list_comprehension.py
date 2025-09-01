@@ -89,3 +89,9 @@ def pascal(level):
 		return [1] + [prev_l[i] + prev_l[i+1] for i in range(level-2)] + [1]
 		
 print([pascal(i) for i in range(1,6)])
+# pascal triangle
+# alternative using math.comb in nested list
+from math import comb
+N = 6
+l20 = [[comb(n,k) for k in range(n+1)] for n in range(N)]
+print(l20)
