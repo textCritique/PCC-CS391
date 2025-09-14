@@ -79,12 +79,11 @@ void appendCll(cll_t* cll, int data){
     new->data = data;
     // when cll is empty
     if (cll->head == NULL){
+        // point new's next to itself
+        new->next = new;
         // assign new node to head and tail
         cll->head = new;
         cll->tail = new;
-        // connect head to tail and tail to head
-        cll->head->next = cll->tail;
-        cll->tail = cll->head;
         return;
     }
     // when cll is non empty
