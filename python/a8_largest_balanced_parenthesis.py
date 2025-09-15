@@ -3,7 +3,7 @@
 def is_balanced(str):
     stack = []
     closed = {")":"(", "}" : "{", "]" : "["} # it contains corresponding opening braces - helps to refactor lines 2nd case 
-    for i,c in enumerate(str):
+    for c in str:
         match c:
             case "("| "{" | "[":
                 stack.append(c)  # keeps tracks of last inserted braces
@@ -20,7 +20,7 @@ def is_balanced(str):
     return False
 
 def longest_balanced_parentheses(str):
-    balanced_substring = [str[i:j]  for i in range(len(balanced)) for j in range(i+1,len(balanced)+1) if is_balanced(str[i:j])]
+    balanced_substring = [str[i:j]  for i in range(len(str)) for j in range(i+1,len(str)+1) if is_balanced(str[i:j])]
     len_balanced_substring = list(map(len,balanced_substring))
     # fot returning whole substring
     #return balanced_substring[len_balanced_substring.index(max(len_balanced_substring))]
