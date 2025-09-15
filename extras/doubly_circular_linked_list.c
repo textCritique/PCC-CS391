@@ -170,12 +170,80 @@ void deleteTailCdll(cdll_t *cdll){
 
     free(deleted);
 }
+// insert at any pos in the cdll
+void insertPosCdll(cdll_t *cdll,int pos, int data){
+    // insert at first pos
+    if (pos == 1){
+        insertHeadCdll(cdll,data);
+        return;
+    }
+    int length = len(cdll);
+    // append to cdll
+    if (pos == length+1){
+        appendCdll(cdll,data);
+        return;
+    }
+    // check for invalid pos
+    if (pos > length + 1 || pos < 1){
+        puts("not a valid position");
+        return;
+    }
+    // inserting at pos from 2 to length
+    node_t *beforePos, *atPos;
+    beforePos = cdll->head;
+    
+    for (int i = 1; i < pos-1; i++, beforePos = beforePos->next);
+    atPos = beforePos->next;
+
+    node_t *new = malloc(sizeof(node_t));
+    new->data = data;
+    // connect beforePos to new and vice versa
+    beforePos->next = new;
+    new->prev = beforePos;
+    // connect new to atPos and vice versa
+    new->next = atPos;
+    atPos->prev = new;
+}
+// delete at node at any pos of cdll
+void deletePosCdll(cdll_t *cdll,int pos){
+    // delete at pos 1 ie head deletion
+    if (pos == 1){
+        deleteHeadCdll(cdll);
+        return;
+    }
+    int length = len(cdll);
+    // delete at last pos ie tail deletion
+    if (length == pos){
+        deleteTailCdll(cdll);
+        return;
+    }
+    // check for invalid pos
+    if (pos > length || pos < 1){
+        puts("not a valid positon");
+        return;
+    }
+    // deletion at pos from 2 to length
+    node_t *beforePos, *atPos;
+    beforePos = cdll->head;
+    
+    for (int i = 1; i < pos-1; i++,beforePos = beforePos->next);
+    atPos = beforePos->next;
+
+    // connect the beforePos to node after atPos and vice versa
+    beforePos->next = atPos->next;
+    atPos->next->prev = beforePos;
+
+    // delete node after the pos
+    free(atPos);
+}
 int main(){
     cdll_t *cdll = createCdll();
 
     for (int i = 1; i < 6; i++) insertHeadCdll(cdll,i);
 
     deleteTailCdll(cdll);
+    insertPosCdll(cdll,5,200);
+    deletePosCdll(cdll,5);
     printCdll(cdll);
     printFN(cdll,10);
     printBN(cdll,10);
