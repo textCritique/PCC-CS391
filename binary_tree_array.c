@@ -70,6 +70,41 @@ void display(bt_t* bt){
     }
     puts(" ");
 }
+void printInorder(bt_t *bt,int i){
+    if (bt->q[i]== 0) return;
+    printf()
+}
+void printInorder(bt_t *bt,int i){
+    // node is empty
+    if (bt->q[i]== 0) return;
+    // traverse to left of bst
+    printInorder(bt,2*i+1);
+    // print current node's value
+    printf("%d ",node->data);
+    // traverse right of bst
+    printInorder(bt,2*i+2);
+}
+// printing elements of the bs tree by traversing preorderly
+void printPreorder(bt_t *bt,int i){
+    // node is empty
+    if (node == NULL) return;
+    printf("%d ",node->data);
+    // traverse left of the current node
+    printPreorder(bt,2*i+1);
+    // traverse right of the current node
+    printPreorder(bt,2*i+2);
+}
+// printing elements of the tree by traversing postorderly
+void printPostorder(bt_t *bt,int i){
+    // node is empty
+    if (node == NULL) return;
+    // traverse left subtree of current node
+    printPostorder(bt,2*i+1);
+    // traverse right subtree of current node
+    printPostorder(bt,2*i+2);
+    // print value of current node
+    printf("%d ",node->data);
+}
 int main(){
     bt_t *bt = malloc(sizeof(bt_t));
     insert(bt,1);      
