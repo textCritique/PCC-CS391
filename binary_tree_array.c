@@ -4,18 +4,17 @@
 
 #define MAX 1000
 
-// struct to encaptulate the array and index into single data type 
+// struct to encaptulate the array which stores the data of the binary tree 
 // 0 is used for checking if we have initialized an array index or not
 typedef struct binary_tree{
     int q[MAX]; // array where the binary heap will be stored
-    int ci; // current index where the insertion must happen to preserve the heap invariant
 }bt_t;
 
 typedef struct bogo{
     int val; // stores the value 
     int i; // stores the index
 }vi;
-// get index and value of the parent node by giving index of current node
+// get index and value of the parent node by giving index of current node - currently not required
 vi get_parent(bt_t *bt, int index){
     vi parent;
     parent.i = (index - 1)/2;
@@ -38,6 +37,11 @@ vi get_child_right(bt_t *bt,int index){
 }
 // helper function for inserting node
 void insert_inner(bt_t *bt,vi node,int item){
+    // check for index out of bounds
+    if (node.i >= MAX) {
+        puts("index out of bounds");
+        return;
+    }
     // current node is unoccupied
     if (node.val == 0){
         bt->q[node.i] = item;
@@ -51,22 +55,19 @@ void insert_inner(bt_t *bt,vi node,int item){
         insert_inner(bt,get_child_left(bt,node.i),item);
     }
 }
-// for inserting value into the bt
+// for inserting value into the bt - a wrapper function
 void insert(bt_t *bt, int item){
-    // check if space is available
-    if (bt->ci >= MAX){
-        printf("bt overflow\n");
-        return;
-    }
-    
-
     vi node = {bt->q[0],0};
     insert_inner(bt,node,item);
-
 }
 
 // printing elements of the bs tree by traversing inorderly
 void printInorder(bt_t *bt,int i){
+    // check for index out of bounds
+    if (i >= MAX) {
+        puts("index out of bounds");
+        return;
+    }
     // node is empty
     if (bt->q[i]== 0) return;
     // traverse to left of bst
@@ -78,6 +79,11 @@ void printInorder(bt_t *bt,int i){
 }
 // printing elements of the bs tree by traversing preorderly
 void printPreorder(bt_t *bt,int i){
+    // check for index out of bounds
+    if (i >= MAX) {
+        puts("index out of bounds");
+        return;
+    }
     // node is empty
     if (bt->q[i]== 0) return;
     printf("%d ",bt->q[i]);
@@ -88,6 +94,11 @@ void printPreorder(bt_t *bt,int i){
 }
 // printing elements of the tree by traversing postorderly
 void printPostorder(bt_t *bt,int i){
+    // check for index out of bounds
+    if (i >= MAX) {
+        puts("index out of bounds");
+        return;
+    }
     // node is empty
     if (bt->q[i]== 0) return;
     // traverse left subtree of current node
@@ -99,13 +110,25 @@ void printPostorder(bt_t *bt,int i){
 }
 int main(){
     bt_t *bt = malloc(sizeof(bt_t));
-    insert(bt,1);      
-    insert(bt,2);
-    insert(bt,3);
-    insert(bt,4);
-    insert(bt,5);
+    insert(bt,11);      
     insert(bt,6);
-    insert(bt,7);
+    insert(bt,15);
+    insert(bt,3);
+    insert(bt,8);
+    insert(bt,13);
+    insert(bt,17);
+    insert(bt,1);
+    insert(bt,5);
+    insert(bt,12);
+    insert(bt,14);
+    insert(bt,19);
 
     printInorder(bt,0);
+    puts("");
+    printPreorder(bt,0);
+    puts("");
+    printPostorder(bt,0);
+    puts("");
+
+    return 0;
 }
