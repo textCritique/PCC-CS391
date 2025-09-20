@@ -114,8 +114,30 @@ void freeBst(bst_t *bst){
     // free the bst's data structure
     free(bst);
 }
+// for finding successor node's value
+int successor(node_t *node, int which_child){
+    // when which_child is 0 then we find left successor
+    // else we find right successor
+    node_t *trav;
+    if (which_child == 0){
+        // find the node with largest value in the left subtree
+        trav = node->left;
+        if (trav->right == NULL) // when left subtree has only one right node
+            return trav->data;
+        while (trav->right->left != trav->right->right) // both nodes will point to same address when both of them is NULL
+            trav = trav->right;
+    }
+    else {
+        // find the node with smallest value in the right subtree
+        trav = node->right;
+        if (trav->left == NULL) // when right subtree has only one left node
+            return trav->data;
+        while (trav->left->left != trav->left->right)
+            trav = trav->left;
+    }
+    return trav->data;
+}
 
-// root node is to be deleted
 // delete particular data element if it exists
 void deleteNode(node_t *node,int data){
     // check if null node
@@ -125,27 +147,27 @@ void deleteNode(node_t *node,int data){
     }
     // node to be deleted is leaf node
     // required node is in the left subtree
-    if (node->left->data == data && node->left->left == NULL && node->left->right == NULL){
+    if (node->left != NULL && node->left->data == data && node->left->left == NULL && node->left->right == NULL){
         // free the node containing the required data and set the parent node 's left to nulll
         free(node->left);
         node->left = NULL;
     }
     // required node is in the right node
-    else if (node->right->data == data && node->right->left == NULL && node->right->right == NULL){
+    else if (node->right != NULL && node->right->data == data && node->right->left == NULL && node->right->right == NULL){
         // free the node containing the required data and set the parent node 's left to nulll
         free(node->right);
         node->right = NULL;
     }
     // node to be deleted has left subtree only
     // required node is in the left 
-    else if (node->left->data == data &&  node->left->left != NULL && node->left->right == NULL){
+    else if (node->left != NULL && node->left->data == data &&  node->left->left != NULL && node->left->right == NULL){
         node_t *deleted = node->left;
         // point current's node left to deleted node's left
         node->left = deleted->left;
         free(deleted);
     }
     // required node is in the right 
-    else if (node->right->data == data && node->right->left != NULL && node->right->right == NULL){
+    else if (node->right != NULL && node->right->data == data && node->right->left != NULL && node->right->right == NULL){
         node_t *deleted = node->right;
         // point current's node right to deleted node's left
         node->right = deleted->left;
@@ -153,24 +175,49 @@ void deleteNode(node_t *node,int data){
     }
     // node to be deleted has right subtree only
     // required node is in the left 
-    else if (node->left->data == data &&  node->left->left == NULL && node->left->right != NULL){
+    else if (node->left != NULL && node->left->data == data &&  node->left->left == NULL && node->left->right != NULL){
         node_t *deleted = node->left;
         // point current's node left to deleted node's right
         node->left = deleted->right;
         free(deleted);
     }
     // required node is in the right 
-    else if (node->right->data == data && node->right->left == NULL && node->right->right != NULL){
+    else if (node->right != NULL && node->right->data == data && node->right->left == NULL && node->right->right != NULL){
         node_t *deleted = node->right;
         // point current's node right to deleted node's left
         node->right = deleted->right;
         free(deleted);
     }
     // node to be deleted has both left and right subtrees
-    // required node is in the left
-    else if (node->left->data == data && node->left->left != NULL && node->left->right != NULL){
-        // find left or right successor
+    else if (node->data == data && node->left != NULL && node->right != NULL){
+        // find left or right successor - we choose right successor - because we wanna be right ;)
+        // then we set current node's value with its successor, then we delete the successor, by calling this function recursively
+        int successor_val = successor(node,1);
+        node->data = successor_val;
+        // edge case : the node's immediate right child is successor - because we are considering right child as successor
+        if (node->right->data == successor_val){
+            node_t *deleted = node->right;
+            node->right = deleted->right;
+            free(deleted);
+            return;
+        }
+        deleteNode(node->right,successor_val);
     }
+    // traverse the tree to find the node to be deleted
+    else {
+        if (node->data < data) deleteNode(node->right,data);
+        else deleteNode(node->left,data);
+    }
+}
+// wrapper function for deleting particular node with specific value in the bst
+void deleteBst(bst_t *bst, int val){
+    // root node is to be deleted
+    if (bst->root->data == val){
+        free(bst->root);
+        bst->root = NULL;
+        return;
+    }
+    deleteNode(bst->root,val); // need to dive into bst
 }
 int main(){
     bst_t *bst = createBst();
@@ -187,6 +234,10 @@ int main(){
     insertBst(bst,14);
     insertBst(bst,19);
 
+    // deleteBst(bst,1);
+    deleteBst(bst,15);
+    deleteBst(bst,17);
+    deleteBst(bst,6);
     printInorder(bst->root);
     puts("");
     printPostorder(bst->root);
