@@ -5,13 +5,13 @@
 typedef struct qnode{
     node_t* data; // node_t is the node of bst
     struct qnode* next;
-}node;
+}qnode_t;
 
-extern node* head;
-extern node* tail;
+extern qnode_t* head;
+extern qnode_t* tail;
 
-int enqueue(int item);
-int dequeue();
+int enqueue(node_t* item);
+node_t* dequeue();
 void display();
 
 #endif

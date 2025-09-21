@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "binary_search_tree.h"
+#include "a8_queue.h"
 
 // allocating space for structure containing root
 bst_t* createBst(){

@@ -9,11 +9,11 @@
 #include "binary_search_tree.h"
 
 
-node* head = NULL;
-node* tail = NULL;
+qnode_t* head = NULL;
+qnode_t* tail = NULL;
 
-int enqueue(int item){
-    node* temp = malloc(sizeof(node));
+int enqueue(node_t* item){
+    qnode_t* temp = malloc(sizeof(qnode_t));
     if (!temp){
         perror("malloc");
         return 0;
@@ -42,8 +42,8 @@ int enqueue(int item){
     }
     return 1;
 }
-int dequeue(){
-    int val;
+node_t* dequeue(){
+    node_t* val;
     // there is no element
     // !head is also enough
     if (!head ){
@@ -57,7 +57,7 @@ int dequeue(){
     }
     // more than one element
     else {
-        node* temp = head;
+        qnode_t* temp = head;
         head = head->next;
         val = temp->data;
         free(temp);
@@ -69,10 +69,10 @@ void display(){
         puts("Empty");
         return;
     }
-    for (node* trav = head; trav != NULL; trav = trav->next){
+    for (qnode_t* trav = head; trav != NULL; trav = trav->next){
         if (trav == tail)
-            printf("%d\n",trav->data);
+            printf("%d\n",trav->data->data);
         else
-            printf("%d <- ",trav->data);
+            printf("%d <- ",trav->data->data);
     }
 }
