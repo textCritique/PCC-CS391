@@ -210,6 +210,24 @@ void deleteBst(bst_t *bst, int val){
     }
     deleteNode(bst->root,val); // need to dive into bst
 }
+
+// breadth first traversal
+void level_order_traversal(node_t *node){
+    // node which we will visit and print the value
+    node_t* visit;
+    enqueue(node);
+    while (head != NULL){
+        visit = dequeue();
+        printf("%d ",visit->data);
+        // check if we can visit left child of visited node
+        // if so add it to left child for visiting later
+        if (visit->left != NULL)
+            enqueue(visit->left);
+        // check similarly for right child as well
+        if (visit->right != NULL)
+            enqueue(visit->right);
+    }  
+}
 int main(){
     bst_t *bst = createBst();
     insertBst(bst,11);
