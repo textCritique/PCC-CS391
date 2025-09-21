@@ -244,15 +244,17 @@ int main(){
     insertBst(bst,19);
 
     // deleteBst(bst,1);
-    deleteBst(bst,15);
-    deleteBst(bst,17);
-    deleteBst(bst,6);
+    // deleteBst(bst,15);
+    // deleteBst(bst,17);
+    // deleteBst(bst,6);
     printInorder(bst->root);
     puts("");
     printPostorder(bst->root);
     puts("");
     printPreorder(bst->root);
-
+    printf("\n\n\n");
+    // print breadth first
+    level_order_traversal(bst->root);
     freeBst(bst);
     return 0;
 }
