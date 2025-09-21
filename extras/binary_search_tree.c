@@ -1,17 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// data structure for node which stores data and reference to left and right child nodes
-typedef struct node{
-    struct node *left;
-    int data;
-    struct node *right;
-}node_t;
-
-// data structure for storing root node of binary search tree
-typedef struct {
-    node_t *root;
-}bst_t;
+#include "binary_search_tree.h"
 
 // allocating space for structure containing root
 bst_t* createBst(){

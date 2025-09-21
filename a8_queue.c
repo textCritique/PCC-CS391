@@ -1,40 +1,78 @@
+// queue implemented through linked list
+// head node represents front of the queue 
+// tail node represents rear of the queue
+
+/*------------------------------------IT WILL BE USED IN PERFORMING BFS-------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
+#include "a8_queue.h"
+#include "binary_search_tree.h"
 
-typedef struct node
-{
-    int data;
-    struct node* next;
-    struct node* prev;
-}node;
 
 node* head = NULL;
 node* tail = NULL;
 
-int append(int item){
+int enqueue(int item){
     node* temp = malloc(sizeof(node));
     if (!temp){
         perror("malloc");
-        return 1;
+        return 0;
     }
     temp->data = item;
+    temp->next = NULL;
+
+    // case where the append happens when ll is empty
+    // we handle it as - we initialize the head and make tail equal to head
     if (!head){
         head = temp;
-        head->next = NULL;
-        head->prev = NULL;
+        tail = head;
+        return 1;
     }
-    if (!tail){
-        tail = temp;
-        tail-> next = NULL;
-        tail->prev = NULL;
-    }
+    // when the there is one element in the ll 
+    // we make new element a tail node and connect head to tail 
     if (head == tail){
         tail = temp;
-        tail ->next = NULL;
-        tail ->prev = head;
+        head->next = tail;
     }
-    else
+    // ll contains more than one element
+    // connect tail to new element node and make new node the tail node
+    else {
+        tail ->next = temp;
+        tail = temp;
+    }
+    return 1;
 }
-int main(){
-    return 0;
+int dequeue(){
+    int val;
+    // there is no element
+    // !head is also enough
+    if (!head ){
+        return 0; // means empty
+    }
+    // there is only one element
+    if (head == tail){
+        val = head->data;
+        free(head); // freeing head also frees tail as they point to same thing
+        head = NULL, tail = NULL;
+    }
+    // more than one element
+    else {
+        node* temp = head;
+        head = head->next;
+        val = temp->data;
+        free(temp);
+    }
+    return val;
+}
+void display(){
+    if (!head){
+        puts("Empty");
+        return;
+    }
+    for (node* trav = head; trav != NULL; trav = trav->next){
+        if (trav == tail)
+            printf("%d\n",trav->data);
+        else
+            printf("%d <- ",trav->data);
+    }
 }
