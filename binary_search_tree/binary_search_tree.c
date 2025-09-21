@@ -113,7 +113,7 @@ int successor(node_t *node, int which_child){
     if (which_child == 0){
         // find the node with largest value in the left subtree
         trav = node->left;
-        if (trav->right == NULL) // when left subtree has only one right node
+        if (trav->right == NULL) // when left subtree has no right node
             return trav->data;
         while (trav->right->left != trav->right->right) // both nodes will point to same address when both of them is NULL
             trav = trav->right;
@@ -121,7 +121,7 @@ int successor(node_t *node, int which_child){
     else {
         // find the node with smallest value in the right subtree
         trav = node->right;
-        if (trav->left == NULL) // when right subtree has only one left node
+        if (trav->left == NULL) // when right subtree has no left node
             return trav->data;
         while (trav->left->left != trav->left->right)
             trav = trav->left;
@@ -202,8 +202,8 @@ void deleteNode(node_t *node,int data){
 }
 // wrapper function for deleting particular node with specific value in the bst
 void deleteBst(bst_t *bst, int val){
-    // root node is to be deleted
-    if (bst->root->data == val){
+    // root node is to be deleted which is also leaf node
+    if (bst->root->data == val && bst->root->left == bst->root->right){
         free(bst->root);
         bst->root = NULL;
         return;
