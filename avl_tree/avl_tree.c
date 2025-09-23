@@ -60,11 +60,11 @@ void insertAvl(avl_t *avl,int data){
 void printInorder(node_t *node){
     // node is empty
     if (node == NULL) return;
-    // traverse to left of bst
+    // traverse to left of avl
     printInorder(node->left);
     // print current node's value
     printf("%d ",node->data);
-    // traverse right of bst
+    // traverse right of avl
     printInorder(node->right);
 }
 // for printing in preorderly fashion
@@ -113,11 +113,11 @@ void free_nodes(node_t *node){
 }
 // free the avl 
 void freeAvl(avl_t *avl){
-    // when space for bst is not allocated
+    // when space for avl is not allocated
     if (avl == NULL) return;
-    // free all nodes of the bst
+    // free all nodes of the avl
     free_node(avl->root);
-    // free the bst's data structure
+    // free the avl's data structure
     free(avl);
 }
 // find the successor node's value
