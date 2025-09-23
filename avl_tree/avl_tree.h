@@ -29,9 +29,9 @@ void insertAvl(avl_t *avl,int data);
 // for printing inorderly fashion
 void printInorder(node_t *node);
 // for printing in preorderly fashion
-void printPreoder(node_t *node);
+void printPreorder(node_t *node);
 // for printing in postorderly fashion
-void printPostoder(node_t *node);
+void printPostorder(node_t *node);
 // delete all nodes of avl
 void free_nodes(node_t *node);
 // free the avl 

@@ -27,7 +27,7 @@ void insertAvl_inner(node_t *node, node_t *newnode){
             newnode->parent = node;
         }
         else
-            insertAvl(node->left,newnode); // insert to left of node
+            insertAvl_inner(node->left,newnode); // insert to left of node
     }
 }
 // wrapper function for inserting into avl
@@ -47,7 +47,7 @@ void insertAvl(avl_t *avl,int data){
         return;
     }
     // avl is non empty
-    insertAvl(avl->root,newnode);
+    insertAvl_inner(avl->root,newnode);
     // update the height
     newnode = newnode->parent;
     while (newnode != NULL){
@@ -63,12 +63,12 @@ void printInorder(node_t *node){
     // traverse to left of avl
     printInorder(node->left);
     // print current node's value
-    printf("%d ",node->data);
+    printf("%d %d\n",node->data,node->h);
     // traverse right of avl
     printInorder(node->right);
 }
 // for printing in preorderly fashion
-void printPreoder(node_t *node){
+void printPreorder(node_t *node){
     // node is empty
     if (node == NULL) return;
     printf("%d ",node->data);
@@ -78,7 +78,7 @@ void printPreoder(node_t *node){
     printPreorder(node->right);
 }
 // for printing in postorderly fashion
-void printPostoder(node_t *node){
+void printPostorder(node_t *node){
     // node is empty
     if (node == NULL) return;
     // traverse left subtree of current node
@@ -96,18 +96,18 @@ void free_nodes(node_t *node){
     
     // current node has only left subtree
     else if (node->left != NULL && node->right == NULL){
-        free_node(node->left);
+        free_nodes(node->left);
         free(node);
     }
     // current node has only right subtree
     else if (node->right != NULL && node->left == NULL) {
-        free_node(node->right);
+        free_nodes(node->right);
         free(node);
     }
     // free both left and left subtree
     else {
-        free_node(node->left);
-        free_node(node->right);
+        free_nodes(node->left);
+        free_nodes(node->right);
         free(node);
     }
 }
@@ -116,7 +116,7 @@ void freeAvl(avl_t *avl){
     // when space for avl is not allocated
     if (avl == NULL) return;
     // free all nodes of the avl
-    free_node(avl->root);
+    free_nodes(avl->root);
     // free the avl's data structure
     free(avl);
 }
@@ -222,4 +222,23 @@ void deleteAvl(avl_t *avl,int val){
 // breadth first printing of value of nodes
 void level_order_traversal(node_t *node){
     return;
+}
+
+int main(){
+    avl_t *avl = createAvl();
+    insertAvl(avl,11);
+    insertAvl(avl,6);
+    insertAvl(avl,15);
+    insertAvl(avl,3);
+    insertAvl(avl,8);
+    insertAvl(avl,13);
+    insertAvl(avl,17);
+    insertAvl(avl,1);
+    insertAvl(avl,5);
+    insertAvl(avl,12);
+    insertAvl(avl,14);
+    insertAvl(avl,19);
+
+    printInorder(avl->root);
+    puts("");
 }
