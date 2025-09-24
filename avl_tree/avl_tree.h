@@ -40,7 +40,7 @@ void freeAvl(avl_t *avl);
 int successor(node_t *node,int which_child);
 // for deleting specific data element if it exists
 // returns address of parent node of deleted node - for updating height of nodes
-node_t* deleteNode(node_t *node,int data){
+node_t* deleteNode(node_t *node,int data);
 // wrapper function for deleting particular node with specific value in the avl
 void deleteAvl(avl_t *avl,int val);
 // breadth first printing of value of nodes
