@@ -20,6 +20,15 @@ typedef struct{
 
 //allocation of structure containing root
 avl_t* createAvl();
+// function to return maximum height of node whose child nodes are left and right
+// takes left and right nodes and which node's subtree's insertion/deletion has happened
+// which_side: 0 means insertion/deletion happened in left subtree otherwise insertion/deletion happened in right node
+// val : whether insertion or deletion happened- -1 means deletion and 1 means insertion
+int max_height(node_t *left,node_t *right,int which_side);
+// recursive function for height of the node
+// for testiong purpose
+int height_node(node_t *node);
+
 // inserting into avl 
 // just plain insertion, no balancing
 void insertAvl_inner(node_t *node, node_t *newnode);
@@ -29,9 +38,9 @@ void insertAvl(avl_t *avl,int data);
 // for printing inorderly fashion
 void printInorder(node_t *node);
 // for printing in preorderly fashion
-void printPreoder(node_t *node);
+void printPreorder(node_t *node);
 // for printing in postorderly fashion
-void printPostoder(node_t *node);
+void printPostorder(node_t *node);
 // delete all nodes of avl
 void free_nodes(node_t *node);
 // free the avl 
@@ -39,7 +48,8 @@ void freeAvl(avl_t *avl);
 // find the successor node's value
 int successor(node_t *node,int which_child);
 // for deleting specific data element if it exists
-void deleteNode(node_t *node,int data);
+// returns address of parent node of deleted node - for updating height of nodes
+node_t* deleteNode(node_t *node,int data);
 // wrapper function for deleting particular node with specific value in the avl
 void deleteAvl(avl_t *avl,int val);
 // breadth first printing of value of nodes

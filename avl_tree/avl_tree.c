@@ -27,7 +27,42 @@ void insertAvl_inner(node_t *node, node_t *newnode){
             newnode->parent = node;
         }
         else
-            insertAvl(node->left,newnode); // insert to left of node
+            insertAvl_inner(node->left,newnode); // insert to left of node
+    }
+}
+// function to return maximum height of node whose child nodes are left and right
+// takes left and right nodes and which node's subtree's insertion/deletion has happened
+// which_side: 0 means insertion/deletion happened in left subtree otherwise insertion/deletion happened in right node
+// val : whether insertion or deletion happened- -1 means deletion and 1 means insertion
+int max_height(node_t *left,node_t *right,int which_side){
+    // degenerate cases: either left or right node is NULL
+    // if left is NULL then insertion has happened in the right and vice versa
+    // no need to compare with which_side for finding the whether insertion happened in the left or right
+    if (left == NULL)
+        return right->h +1;
+    else if (right == NULL)
+        return left->h+1;
+    // checking for where the insertion happened and finding max height
+    if (which_side == 0)// insertion in the left side
+        // height of parent node will always be 1 more than max height of its child nodes
+        return (left->h > right->h ? left->h+1 : right->h+1);
+    else// insertion in right side
+        return (left->h > right->h ? left->h +1: right->h+1);    
+}
+// recursive function for height of the node
+// for testiong purpose
+int height_node(node_t *node){
+    // base case: boh child is null, ie leaf node : height is 0
+    if (node->left == node->right)
+        return 0;
+    // recursive cases: one or both is null
+    else if (node->left == NULL) return 1+height_node(node->right);
+    else if (node->right == NULL) return 1 + height_node(node->left);
+    else{
+        int left_height = height_node(node->left);
+        int right_height = height_node(node->right);
+        // return max among left or right child's height
+        return (left_height > right_height ? left_height+1 : right_height + 1);
     }
 }
 // wrapper function for inserting into avl
@@ -47,12 +82,21 @@ void insertAvl(avl_t *avl,int data){
         return;
     }
     // avl is non empty
-    insertAvl(avl->root,newnode);
+    insertAvl_inner(avl->root,newnode);
     // update the height
-    newnode = newnode->parent;
-    while (newnode != NULL){
-        newnode->h = newnode->h +1;
-        newnode = newnode->parent;
+    // idea here is to traverse through ancesstors of the newly inserted node until root node is reached
+    // and find max height of left and right subtrees where one of them is incremented depending on which
+    // subtree insertion took place
+    node_t *child = newnode;
+    node_t *parent = newnode->parent;
+    while (parent != NULL){
+        if (parent->left == child)
+            parent->h = max_height(parent->left,parent->right,0);
+        else
+            parent->h = max_height(parent->left,parent->right,1);
+
+        child = parent;
+        parent = child->parent;
     }
     // TO DO: do the required rotations to preserve the avl invariant
 }
@@ -60,15 +104,15 @@ void insertAvl(avl_t *avl,int data){
 void printInorder(node_t *node){
     // node is empty
     if (node == NULL) return;
-    // traverse to left of bst
+    // traverse to left of avl
     printInorder(node->left);
     // print current node's value
-    printf("%d ",node->data);
-    // traverse right of bst
+    printf("%d %d %d\n",node->data,node->h,height_node(node));
+    // traverse right of avl
     printInorder(node->right);
 }
 // for printing in preorderly fashion
-void printPreoder(node_t *node){
+void printPreorder(node_t *node){
     // node is empty
     if (node == NULL) return;
     printf("%d ",node->data);
@@ -78,7 +122,7 @@ void printPreoder(node_t *node){
     printPreorder(node->right);
 }
 // for printing in postorderly fashion
-void printPostoder(node_t *node){
+void printPostorder(node_t *node){
     // node is empty
     if (node == NULL) return;
     // traverse left subtree of current node
@@ -96,28 +140,28 @@ void free_nodes(node_t *node){
     
     // current node has only left subtree
     else if (node->left != NULL && node->right == NULL){
-        free_node(node->left);
+        free_nodes(node->left);
         free(node);
     }
     // current node has only right subtree
     else if (node->right != NULL && node->left == NULL) {
-        free_node(node->right);
+        free_nodes(node->right);
         free(node);
     }
     // free both left and left subtree
     else {
-        free_node(node->left);
-        free_node(node->right);
+        free_nodes(node->left);
+        free_nodes(node->right);
         free(node);
     }
 }
 // free the avl 
 void freeAvl(avl_t *avl){
-    // when space for bst is not allocated
+    // when space for avl is not allocated
     if (avl == NULL) return;
-    // free all nodes of the bst
-    free_node(avl->root);
-    // free the bst's data structure
+    // free all nodes of the avl
+    free_nodes(avl->root);
+    // free the avl's data structure
     free(avl);
 }
 // find the successor node's value
@@ -222,4 +266,13 @@ void deleteAvl(avl_t *avl,int val){
 // breadth first printing of value of nodes
 void level_order_traversal(node_t *node){
     return;
+}
+
+int main(){
+    avl_t *avl = createAvl();
+    int tobeinserted[] = {11,5,1,7,10,6,4,8,3,12,14};
+    for (int i = 0; i < sizeof(tobeinserted)/sizeof(int); i++)
+        insertAvl(avl,tobeinserted[i]);
+    printInorder(avl->root);
+    puts("");
 }
